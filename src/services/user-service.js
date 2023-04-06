@@ -1,4 +1,5 @@
 import { UserRepository } from "../repositories/index.js";
+import { createError } from "../utils/error.js";
 
 class UserService {
   constructor() {
@@ -34,6 +35,23 @@ class UserService {
   }
 
   async googleAuth() {}
+
+  async updateUser(idFromParams, idFromCookie, data) {
+    try {
+      if (idFromParams === idFromCookie) {
+        const updatedUser = await this.userRepository.update(
+          idFromParams,
+          data
+        );
+        return updatedUser;
+      } else {
+        throw createError(new Error("You can update only your account"), 403);
+      }
+    } catch (error) {
+      console.error("Something went wrong at user service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default UserService;

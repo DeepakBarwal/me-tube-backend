@@ -3,11 +3,23 @@ import { createError } from "../utils/error.js";
 
 const userService = new UserService();
 
-export const update = (req, res, next) => {
+export const update = async (req, res, next) => {
   try {
-    res.send("lol");
+    const updatedUser = await userService.updateUser(
+      req.params.id,
+      req.user.id,
+      req.body
+    );
+    // if (updatedUser.data.status) throw updatedUser;
+    return res.status(200).json({
+      success: true,
+      message: "Successfully updated the user",
+      data: updatedUser,
+      err: {},
+    });
   } catch (error) {
     console.error(error);
+    next(createError(error, error.status));
   }
 };
 

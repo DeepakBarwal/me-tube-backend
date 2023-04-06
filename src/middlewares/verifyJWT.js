@@ -4,7 +4,6 @@ import { JWT_SECRET } from "../config/serverConfig.js";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
-  console.log(token);
   if (!token) {
     return next(createError(new Error("You are not authenticated"), 401));
   }
