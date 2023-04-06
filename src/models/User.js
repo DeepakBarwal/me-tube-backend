@@ -19,10 +19,12 @@ const userSchema = new mongoose.Schema(
     img: {
       type: String,
     },
-    subscribers: {
-      type: Number,
-      default: 0,
-    },
+    subscribers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     subscribedUsers: [
       {
         type: mongoose.Schema.Types.ObjectId,
