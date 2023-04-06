@@ -1,9 +1,10 @@
 import express from "express";
 const app = express();
 
-import serverConfig from "./config/serverConfig.js";
-const { PORT } = serverConfig;
+import { PORT } from "./config/serverConfig.js";
+import { connect } from "./config/database.js";
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log("Server is listening on PORT " + PORT);
+  await connect();
 });
