@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+import { JWT_SECRET, JWT_EXPIRY } from "../config/serverConfig.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -50,6 +53,16 @@ userSchema.pre("save", function (next) {
     throw error;
   }
 });
+
+userSchema.methods.comparePassword = function comparePassword(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+userSchema.methods.genJWT = function genJWT() {
+  return jwt.sign({ id: this._id, name: this.name }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRY,
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 

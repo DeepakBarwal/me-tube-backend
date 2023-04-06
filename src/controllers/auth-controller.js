@@ -22,6 +22,24 @@ export const signUp = async (req, res, next) => {
   }
 };
 
-export const signIn = (req, res) => {};
+export const signIn = async (req, res, next) => {
+  try {
+    const user = await userService.signIn(req.body);
+    res
+      .cookie("access_token", user.token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({
+        success: true,
+        message: "User successfully logged in",
+        data: user,
+        err: {},
+      });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, 400));
+  }
+};
 
 export const googleAuth = (req, res) => {};

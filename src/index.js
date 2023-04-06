@@ -1,10 +1,12 @@
 import express from "express";
 const app = express();
+import cookieParser from "cookie-parser";
 
 import { PORT } from "./config/serverConfig.js";
 import { connect } from "./config/database.js";
 import apiRoutes from "./routes/index.js";
 
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
