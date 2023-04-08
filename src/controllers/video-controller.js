@@ -21,7 +21,25 @@ export const addVideo = async (req, res, next) => {
   }
 };
 
-export const updateVideo = async (req, res, next) => {};
+export const updateVideo = async (req, res, next) => {
+  try {
+    const updatedVideo = await videoService.updateVideo(
+      req.user.id,
+      req.params.id,
+      req.body
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully updated the video",
+      data: updatedVideo,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
 export const deleteVideo = async (req, res, next) => {};
 
