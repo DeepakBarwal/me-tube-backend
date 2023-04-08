@@ -70,7 +70,23 @@ export const subscribe = async (req, res, next) => {
   }
 };
 
-export const unsubscribe = async (req, res, next) => {};
+export const unsubscribe = async (req, res, next) => {
+  try {
+    const user = await userService.unsubscribeToUser(
+      req.params.id,
+      req.user.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully unsubscribed from the channel",
+      data: user,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
 export const like = async (req, res, next) => {};
 

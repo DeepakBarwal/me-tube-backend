@@ -37,6 +37,29 @@ class UserRepository extends CrudRepository {
     }
   }
 
+  async unsubscribe(id, subber) {
+    try {
+      const user = await User.findById(subber);
+      const channel = await User.findById(id);
+      const isAlreadySubscribed = user.subscribedToUsers.filter((u) =>
+        u._id.equals(channel._id)
+      );
+      if (isAlreadySubscribed.length !== 0) {
+        user.subscribedToUsers = user.subscribedToUsers.filter(
+          (c) => !c._id.equals(channel._id)
+        );
+        channel.subscribers = channel.subscribers.filter(
+          (u) => !u._id.equals(user._id)
+        );
+        await user.save();
+        await channel.save();
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   async getWithSubscribers(id) {
     try {
       const user = await User.findById(id).populate(
