@@ -106,6 +106,19 @@ export const random = async (req, res, next) => {
   }
 };
 
-export const trend = async (req, res, next) => {};
+export const trend = async (req, res, next) => {
+  try {
+    const trendingVideos = await videoService.getTrendingVideos();
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched trending videos",
+      data: trendingVideos,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
 export const sub = async (req, res, next) => {};

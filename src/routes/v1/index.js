@@ -47,8 +47,8 @@ router.post("/likes/toggle", verifyToken, like);
 router.post("/dislikes/toggle", verifyToken, dislike);
 
 router.get("/videos/random", random);
-router.get("/videos/trend");
-router.put("/videos/sub");
+router.get("/videos/trend", trend);
+router.put("/videos/sub", sub);
 router.post("/videos", verifyToken, addVideo);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);

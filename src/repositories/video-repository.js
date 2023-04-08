@@ -15,6 +15,16 @@ class VideoRepository extends CrudRepository {
       throw error;
     }
   }
+
+  async getTrendingVideos() {
+    try {
+      const randomVideos = await Video.find({}).sort({ views: -1 });
+      return randomVideos;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
 
 export default VideoRepository;

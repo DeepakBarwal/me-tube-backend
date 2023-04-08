@@ -56,6 +56,16 @@ class VideoService {
       throw error;
     }
   }
+
+  async getTrendingVideos() {
+    try {
+      const trendingVideos = await this.videoRepository.getTrendingVideos();
+      return trendingVideos;
+    } catch (error) {
+      console.error("Something went wrong at video service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoService;
