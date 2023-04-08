@@ -13,6 +13,10 @@ import {
   updateVideo,
   deleteVideo,
   getVideo,
+  addViews,
+  trend,
+  random,
+  sub,
 } from "./video-controller.js";
 
 export {
@@ -30,4 +34,8 @@ export {
   updateVideo,
   deleteVideo,
   getVideo,
+  addViews,
+  trend,
+  random,
+  sub,
 };

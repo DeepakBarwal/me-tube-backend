@@ -72,3 +72,27 @@ export const getVideo = async (req, res, next) => {
     next(createError(error, error.status));
   }
 };
+
+export const addViews = async (req, res, next) => {
+  try {
+    const updatedVideo = await videoService.videoRepository.update(
+      req.params.id,
+      { $inc: { views: 1 } }
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully viewed the video",
+      data: updatedVideo,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
+
+export const random = async (req, res, next) => {};
+
+export const trend = async (req, res, next) => {};
+
+export const sub = async (req, res, next) => {};

@@ -15,6 +15,10 @@ import {
   updateVideo,
   deleteVideo,
   getVideo,
+  addViews,
+  trend,
+  random,
+  sub,
 } from "../../controllers/index.js";
 import { verifyToken } from "../../middlewares/verifyJWT.js";
 
@@ -46,9 +50,9 @@ router.post("/videos", verifyToken, addVideo);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);
 router.get("/videos/:id", getVideo);
-router.put("/videos/view/:id");
-router.put("/videos/trend");
-router.put("/videos/random");
+router.put("/videos/view/:id", addViews);
+router.get("/videos/trend");
+router.get("/videos/random");
 router.put("/videos/sub");
 
 export default router;
