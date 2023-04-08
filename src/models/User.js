@@ -41,12 +41,15 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", async function (next) {
   try {
     const user = this;
-    const SALT = bcrypt.genSaltSync(10);
-    const encryptedPassword = bcrypt.hashSync(this.password, SALT);
-    user.password = encryptedPassword;
+    const existingUser = await User.findById(user.id);
+    if (!existingUser) {
+      const SALT = bcrypt.genSaltSync(10);
+      const encryptedPassword = bcrypt.hashSync(this.password, SALT);
+      user.password = encryptedPassword;
+    }
     next();
   } catch (error) {
     console.error("Error while saving user in DB: " + error);

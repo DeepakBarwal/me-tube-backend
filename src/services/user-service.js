@@ -85,6 +85,24 @@ class UserService {
       throw error;
     }
   }
+
+  async subscribeToUser(channelId, userId) {
+    try {
+      if (userId) {
+        await this.userRepository.subscribe(channelId, userId);
+        const user = await this.userRepository.getWithSubscribers(userId);
+        return user;
+      } else {
+        throw createError(
+          new Error("You should be logged in first to perform this action"),
+          403
+        );
+      }
+    } catch (error) {
+      console.error("Something went wrong at user service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default UserService;
