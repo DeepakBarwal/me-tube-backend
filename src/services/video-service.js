@@ -66,6 +66,17 @@ class VideoService {
       throw error;
     }
   }
+
+  async getSubscriptionVideos(userId) {
+    try {
+      const subscriptionVideos =
+        await this.videoRepository.getSubscriptionVideos(userId);
+      return subscriptionVideos;
+    } catch (error) {
+      console.error("Something went wrong at video service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoService;

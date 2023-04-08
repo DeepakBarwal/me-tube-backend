@@ -121,4 +121,19 @@ export const trend = async (req, res, next) => {
   }
 };
 
-export const sub = async (req, res, next) => {};
+export const sub = async (req, res, next) => {
+  try {
+    const subscriptionVideos = await videoService.getSubscriptionVideos(
+      req.user.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched subscriptions videos",
+      data: subscriptionVideos,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
