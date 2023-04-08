@@ -10,7 +10,6 @@ export const update = async (req, res, next) => {
       req.user.id,
       req.body
     );
-    // if (updatedUser.data.status) throw updatedUser;
     return res.status(200).json({
       success: true,
       message: "Successfully updated the user",
@@ -23,14 +22,30 @@ export const update = async (req, res, next) => {
   }
 };
 
-export const destroy = (req, res, next) => {};
+export const destroy = async (req, res, next) => {
+  try {
+    const deletedUser = await userService.deleteUser(
+      req.params.id,
+      req.user.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully deleted the user",
+      data: deletedUser,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
-export const getUser = (req, res, next) => {};
+export const getUser = async (req, res, next) => {};
 
-export const subscribe = (req, res, next) => {};
+export const subscribe = async (req, res, next) => {};
 
-export const unsubscribe = (req, res, next) => {};
+export const unsubscribe = async (req, res, next) => {};
 
-export const like = (req, res, next) => {};
+export const like = async (req, res, next) => {};
 
-export const dislike = (req, res, next) => {};
+export const dislike = async (req, res, next) => {};

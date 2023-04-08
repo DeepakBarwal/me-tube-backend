@@ -45,7 +45,27 @@ class UserService {
         );
         return updatedUser;
       } else {
-        throw createError(new Error("You can update only your account"), 403);
+        throw createError(
+          new Error("You can only update your own account"),
+          403
+        );
+      }
+    } catch (error) {
+      console.error("Something went wrong at user service layer: " + error);
+      throw error;
+    }
+  }
+
+  async deleteUser(idFromParams, idFromCookie) {
+    try {
+      if (idFromParams === idFromCookie) {
+        const deletedUser = await this.userRepository.destroy(idFromParams);
+        return deletedUser;
+      } else {
+        throw createError(
+          new Error("You can only delete your own account"),
+          403
+        );
       }
     } catch (error) {
       console.error("Something went wrong at user service layer: " + error);

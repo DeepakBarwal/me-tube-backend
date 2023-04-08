@@ -25,21 +25,21 @@ router.post("/google", googleAuth);
 router.put("/users/:id", verifyToken, update);
 
 // delete user
-router.delete("/users/:id", destroy);
+router.delete("/users/:id", verifyToken, destroy);
 
 // get a user
 router.get("/users/:id", getUser);
 
 // subscribe a user
-router.post("/users/subscribe/:id", subscribe);
+router.post("/users/subscribe/:id", verifyToken, subscribe);
 
 // unsubscribe a user
-router.post("/users/unsubscribe/:id", unsubscribe);
+router.post("/users/unsubscribe/:id", verifyToken, unsubscribe);
 
 // like a video
-router.post("/likes/toggle", like);
+router.post("/likes/toggle", verifyToken, like);
 
 // dislike a video
-router.post("/dislikes/toggle", dislike);
+router.post("/dislikes/toggle", verifyToken, dislike);
 
 export default router;
