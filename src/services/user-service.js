@@ -72,6 +72,19 @@ class UserService {
       throw error;
     }
   }
+
+  async getUser(idFromParams) {
+    try {
+      const user = await this.userRepository.get(idFromParams);
+      if (!user) {
+        throw createError(new Error("User not found"), 404);
+      }
+      return user;
+    } catch (error) {
+      console.error("Something went wrong at user service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default UserService;

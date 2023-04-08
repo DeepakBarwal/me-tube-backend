@@ -40,7 +40,20 @@ export const destroy = async (req, res, next) => {
   }
 };
 
-export const getUser = async (req, res, next) => {};
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await userService.getUser(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully found the user",
+      data: user,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
 export const subscribe = async (req, res, next) => {};
 
