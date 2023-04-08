@@ -58,4 +58,17 @@ export const deleteVideo = async (req, res, next) => {
   }
 };
 
-export const getVideo = async (req, res, next) => {};
+export const getVideo = async (req, res, next) => {
+  try {
+    const video = await videoService.videoRepository.get(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched the video",
+      data: video,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
