@@ -8,6 +8,12 @@ import {
   like,
   dislike,
 } from "./user-controller.js";
+import {
+  addVideo,
+  updateVideo,
+  deleteVideo,
+  getVideo,
+} from "./video-controller.js";
 
 export {
   signUp,
@@ -20,4 +26,8 @@ export {
   unsubscribe,
   like,
   dislike,
+  addVideo,
+  updateVideo,
+  deleteVideo,
+  getVideo,
 };

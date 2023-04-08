@@ -10,6 +10,12 @@ import {
   like,
   dislike,
 } from "../../controllers/index.js";
+import {
+  addVideo,
+  updateVideo,
+  deleteVideo,
+  getVideo,
+} from "../../controllers/index.js";
 import { verifyToken } from "../../middlewares/verifyJWT.js";
 
 const router = express.Router();
@@ -23,23 +29,22 @@ router.post("/google", googleAuth);
 
 // update user
 router.put("/users/:id", verifyToken, update);
-
 // delete user
 router.delete("/users/:id", verifyToken, destroy);
-
 // get a user
 router.get("/users/:id", getUser);
-
 // subscribe a user
 router.post("/users/subscribe/:id", verifyToken, subscribe);
-
 // unsubscribe a user
 router.post("/users/unsubscribe/:id", verifyToken, unsubscribe);
-
 // like a video
 router.post("/likes/toggle", verifyToken, like);
-
 // dislike a video
 router.post("/dislikes/toggle", verifyToken, dislike);
+
+router.post("/videos", verifyToken, addVideo);
+router.put("/videos/:id", verifyToken, updateVideo);
+router.delete("/videos/:id", verifyToken, deleteVideo);
+router.get("/videos/:id", getVideo);
 
 export default router;
