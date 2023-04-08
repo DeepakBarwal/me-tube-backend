@@ -46,5 +46,9 @@ router.post("/videos", verifyToken, addVideo);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);
 router.get("/videos/:id", getVideo);
+router.put("/videos/view/:id");
+router.put("/videos/trend");
+router.put("/videos/random");
+router.put("/videos/sub");
 
 export default router;
