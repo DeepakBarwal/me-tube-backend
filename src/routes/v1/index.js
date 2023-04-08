@@ -46,13 +46,13 @@ router.post("/likes/toggle", verifyToken, like);
 // dislike a video
 router.post("/dislikes/toggle", verifyToken, dislike);
 
+router.get("/videos/random", random);
+router.get("/videos/trend");
+router.put("/videos/sub");
 router.post("/videos", verifyToken, addVideo);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);
 router.get("/videos/:id", getVideo);
 router.put("/videos/view/:id", addViews);
-router.get("/videos/trend");
-router.get("/videos/random");
-router.put("/videos/sub");
 
 export default router;

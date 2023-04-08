@@ -46,6 +46,16 @@ class VideoService {
       throw error;
     }
   }
+
+  async getRandomVideos() {
+    try {
+      const randomVideos = await this.videoRepository.getRandomVideos();
+      return randomVideos;
+    } catch (error) {
+      console.error("Something went wrong at video service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoService;

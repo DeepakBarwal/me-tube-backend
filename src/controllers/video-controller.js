@@ -91,7 +91,20 @@ export const addViews = async (req, res, next) => {
   }
 };
 
-export const random = async (req, res, next) => {};
+export const random = async (req, res, next) => {
+  try {
+    const randomVideos = await videoService.getRandomVideos();
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched random videos",
+      data: randomVideos,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
 export const trend = async (req, res, next) => {};
 
