@@ -27,6 +27,24 @@ class CommentService {
       throw error;
     }
   }
+
+  async delete(id) {
+    try {
+      const comment = await this.commentRepository.get(id);
+
+      if (comment) {
+        var video = await this.videoRepository.get(comment.commentable);
+      }
+      if (video) {
+        video.comments.pull(comment.id);
+        await video.save();
+        return await comment.deleteOne();
+      }
+    } catch (error) {
+      console.error("Something went wrong at comment service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default CommentService;
