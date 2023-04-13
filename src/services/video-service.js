@@ -87,6 +87,16 @@ class VideoService {
       throw error;
     }
   }
+
+  async searchByQuery(searchQuery) {
+    try {
+      const videos = await this.videoRepository.searchByQuery(searchQuery);
+      return videos;
+    } catch (error) {
+      console.error("Something went wrong at video service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoService;

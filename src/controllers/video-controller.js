@@ -155,7 +155,15 @@ export const getByTag = async (req, res, next) => {
 };
 
 export const search = async (req, res, next) => {
+  const query = req.query.q;
   try {
+    const videos = await videoService.searchByQuery(query);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched videos by query",
+      data: videos,
+      err: {},
+    });
   } catch (error) {
     console.error(error);
     next(createError(error, error.status));

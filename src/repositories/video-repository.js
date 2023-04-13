@@ -52,6 +52,18 @@ class VideoRepository extends CrudRepository {
       throw error;
     }
   }
+
+  async searchByQuery(searchQuery) {
+    try {
+      const videos = await Video.find({
+        title: { $regex: searchQuery, $options: "i" },
+      }).limit(40);
+      return videos;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
 
 export default VideoRepository;
