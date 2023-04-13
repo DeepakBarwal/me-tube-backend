@@ -25,7 +25,10 @@ export const addComment = async (req, res, next) => {
 
 export const deleteComment = async (req, res, next) => {
   try {
-    const deletedComment = await commentService.delete(req.params.id);
+    const deletedComment = await commentService.delete(
+      req.params.id,
+      req.user.id
+    );
     return res.status(200).json({
       success: true,
       message: "Successfully deleted the comment",
