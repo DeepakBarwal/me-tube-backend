@@ -19,6 +19,8 @@ import {
   trend,
   random,
   sub,
+  getByTag,
+  search,
 } from "../../controllers/index.js";
 import { verifyToken } from "../../middlewares/verifyJWT.js";
 
@@ -50,9 +52,11 @@ router.get("/videos/random", random);
 router.get("/videos/trend", trend);
 router.get("/videos/subscriptions", verifyToken, sub);
 router.post("/videos", verifyToken, addVideo);
+router.get("/videos/tags", getByTag);
+router.get("/videos/search", search);
+router.put("/videos/view/:id", addViews);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);
 router.get("/videos/:id", getVideo);
-router.put("/videos/view/:id", addViews);
 
 export default router;

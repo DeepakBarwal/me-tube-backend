@@ -17,6 +17,8 @@ import {
   trend,
   random,
   sub,
+  getByTag,
+  search,
 } from "./video-controller.js";
 
 export {
@@ -38,4 +40,6 @@ export {
   trend,
   random,
   sub,
+  getByTag,
+  search,
 };

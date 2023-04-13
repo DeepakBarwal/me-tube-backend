@@ -137,3 +137,27 @@ export const sub = async (req, res, next) => {
     next(createError(error, error.status));
   }
 };
+
+export const getByTag = async (req, res, next) => {
+  const tags = req.query.tags.split(",");
+  try {
+    const videos = await videoService.getByTag(tags);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched videos by tags",
+      data: videos,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
+
+export const search = async (req, res, next) => {
+  try {
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};

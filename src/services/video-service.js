@@ -77,6 +77,16 @@ class VideoService {
       throw error;
     }
   }
+
+  async getByTag(tags) {
+    try {
+      const videos = await this.videoRepository.getByTag(tags);
+      return videos;
+    } catch (error) {
+      console.error("Something went wrong at video service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoService;

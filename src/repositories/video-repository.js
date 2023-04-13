@@ -42,6 +42,16 @@ class VideoRepository extends CrudRepository {
       throw error;
     }
   }
+
+  async getByTag(tags) {
+    try {
+      const videos = await Video.find({ tags: { $in: tags } }).limit(20);
+      return videos;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
 
 export default VideoRepository;
