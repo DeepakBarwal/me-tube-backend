@@ -53,6 +53,16 @@ class CommentService {
       throw error;
     }
   }
+
+  async getAll(videoId) {
+    try {
+      const video = await this.videoRepository.getWithComments(videoId);
+      return video.comments;
+    } catch (error) {
+      console.error("Something went wrong at comment service layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default CommentService;

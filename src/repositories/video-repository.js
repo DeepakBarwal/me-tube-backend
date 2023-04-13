@@ -63,6 +63,18 @@ class VideoRepository extends CrudRepository {
       throw error;
     }
   }
+
+  async getWithComments(id) {
+    try {
+      const video = await Video.findById(id)
+        .populate({ path: "comments" })
+        .lean();
+      return video;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
 
 export default VideoRepository;
