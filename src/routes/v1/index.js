@@ -1,7 +1,9 @@
 import express from "express";
 
-import { signUp, signIn, googleAuth } from "../../controllers/index.js";
 import {
+  signUp,
+  signIn,
+  googleAuth,
   update,
   destroy,
   getUser,
@@ -9,8 +11,6 @@ import {
   unsubscribe,
   like,
   dislike,
-} from "../../controllers/index.js";
-import {
   addVideo,
   updateVideo,
   deleteVideo,
@@ -21,7 +21,11 @@ import {
   sub,
   getByTag,
   search,
+  addComment,
+  deleteComment,
+  getComments,
 } from "../../controllers/index.js";
+
 import { verifyToken } from "../../middlewares/verifyJWT.js";
 
 const router = express.Router();
@@ -58,5 +62,9 @@ router.put("/videos/view/:id", addViews);
 router.put("/videos/:id", verifyToken, updateVideo);
 router.delete("/videos/:id", verifyToken, deleteVideo);
 router.get("/videos/:id", getVideo);
+
+router.post("/comments", verifyToken, addComment);
+router.delete("/comments/:id", verifyToken, deleteComment);
+router.get("/comments/:videoId", getComments);
 
 export default router;

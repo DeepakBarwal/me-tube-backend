@@ -21,6 +21,12 @@ import {
   search,
 } from "./video-controller.js";
 
+import {
+  addComment,
+  deleteComment,
+  getComments,
+} from "./comment-controller.js";
+
 export {
   signUp,
   signIn,
@@ -42,4 +48,7 @@ export {
   sub,
   getByTag,
   search,
+  addComment,
+  deleteComment,
+  getComments,
 };
