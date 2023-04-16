@@ -1,7 +1,9 @@
-import { UserService } from "../services/index.js";
+import { UserService, LikeService, DislikeService } from "../services/index.js";
 import { createError } from "../utils/error.js";
 
 const userService = new UserService();
+const likeService = new LikeService();
+const dislikeService = new DislikeService();
 
 export const update = async (req, res, next) => {
   try {
@@ -88,6 +90,40 @@ export const unsubscribe = async (req, res, next) => {
   }
 };
 
-export const like = async (req, res, next) => {};
+export const like = async (req, res, next) => {
+  try {
+    const response = await likeService.toggleLike(
+      req.query.modelId,
+      req.query.modelType,
+      req.user.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully toggled like",
+      data: response,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
 
-export const dislike = async (req, res, next) => {};
+export const dislike = async (req, res, next) => {
+  try {
+    const response = await dislikeService.toggleDislike(
+      req.query.modelId,
+      req.query.modelType,
+      req.user.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully toggled dislike",
+      data: response,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
