@@ -75,6 +75,18 @@ class VideoRepository extends CrudRepository {
       throw error;
     }
   }
+
+  async find(id) {
+    try {
+      const response = await Video.findById(id).populate({
+        path: "likes",
+      });
+      return response;
+    } catch (error) {
+      console.error("Something went wrong at crud repo layer: " + error);
+      throw error;
+    }
+  }
 }
 
 export default VideoRepository;

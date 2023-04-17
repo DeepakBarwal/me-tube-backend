@@ -14,14 +14,22 @@ class LikeService {
   async toggleLike(modelId, modelType, userId) {
     try {
       if (modelType === "Video") {
-        var likeable = await this.videoRepository.get(modelId);
+        var likeable = await this.videoRepository.find(modelId);
       } else {
         throw new Error("unknown model type");
       }
       const exists = await this.likeRepository.findByUserAndLikable({
-        userId: userId,
-        onModel: modelType,
-        likeable: modelId,
+        $and: [
+          {
+            userId: userId,
+          },
+          {
+            onModel: modelType,
+          },
+          {
+            likeable: modelId,
+          },
+        ],
       });
       if (exists) {
         likeable.likes.pull(exists.id);
@@ -29,12 +37,22 @@ class LikeService {
         await exists.deleteOne();
         var isAdded = false;
       } else {
-        const newLike = await this.likeRepository.create({
+        var newLike = await this.likeRepository.create({
           userId: userId,
           onModel: modelType,
           likeable: modelId,
         });
-        const disliked = await this.dislikeRepository.getByDislikeable(modelId);
+        const disliked = await this.dislikeRepository.getByDislikeable({
+          $and: [
+            {
+              dislikeable: modelId,
+            },
+            {
+              userId: userId,
+            },
+          ],
+        });
+        console.log("disliked", disliked);
         if (disliked) {
           await likeable.dislikes.pull(disliked.id);
           await disliked.deleteOne();
@@ -43,7 +61,18 @@ class LikeService {
         await likeable.save();
         var isAdded = true;
       }
+
       return isAdded;
+    } catch (error) {
+      console.error("Something went wrong at like service layer: " + error);
+      throw error;
+    }
+  }
+
+  async getAllUserIdsWhoLiked(id) {
+    try {
+      const { userId } = await this.likeRepository.get(id);
+      return userId;
     } catch (error) {
       console.error("Something went wrong at like service layer: " + error);
       throw error;

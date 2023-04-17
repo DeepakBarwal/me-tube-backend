@@ -24,6 +24,8 @@ import {
   addComment,
   deleteComment,
   getComments,
+  getUserIdsWhoLiked,
+  getUserIdsWhoDisliked,
 } from "../../controllers/index.js";
 
 import { verifyToken } from "../../middlewares/verifyJWT.js";
@@ -49,8 +51,10 @@ router.post("/users/subscribe/:id", verifyToken, subscribe);
 router.post("/users/unsubscribe/:id", verifyToken, unsubscribe);
 // like a video
 router.post("/likes/toggle", verifyToken, like);
+router.get("/likes/:id", getUserIdsWhoLiked);
 // dislike a video
 router.post("/dislikes/toggle", verifyToken, dislike);
+router.get("/dislikes/:id", getUserIdsWhoDisliked);
 
 router.get("/videos/random", random);
 router.get("/videos/trend", trend);

@@ -109,6 +109,38 @@ export const like = async (req, res, next) => {
   }
 };
 
+export const getUserIdsWhoLiked = async (req, res, next) => {
+  try {
+    const response = await likeService.getAllUserIdsWhoLiked(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched all user ids that liked",
+      data: response,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
+
+export const getUserIdsWhoDisliked = async (req, res, next) => {
+  try {
+    const response = await dislikeService.getAllUserIdsWhoDisliked(
+      req.params.id
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Successfully fetched all user ids that disliked",
+      data: response,
+      err: {},
+    });
+  } catch (error) {
+    console.error(error);
+    next(createError(error, error.status));
+  }
+};
+
 export const dislike = async (req, res, next) => {
   try {
     const response = await dislikeService.toggleDislike(

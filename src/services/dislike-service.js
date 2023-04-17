@@ -19,9 +19,17 @@ class DislikeService {
         throw new Error("unknown model type");
       }
       const exists = await this.dislikeRepository.findByUserAndDisLikable({
-        userId: userId,
-        onModel: modelType,
-        dislikable: modelId,
+        $and: [
+          {
+            userId: userId,
+          },
+          {
+            onModel: modelType,
+          },
+          {
+            dislikable: modelId,
+          },
+        ],
       });
       if (exists) {
         dislikeable.likes.pull(exists.id);
@@ -29,12 +37,21 @@ class DislikeService {
         await exists.deleteOne();
         var isAdded = false;
       } else {
-        const newDislike = await this.dislikeRepository.create({
+        var newDislike = await this.dislikeRepository.create({
           userId: userId,
           onModel: modelType,
           dislikeable: modelId,
         });
-        const liked = await this.likeRepository.getByLikeable(modelId);
+        const liked = await this.likeRepository.getByLikeable({
+          $and: [
+            {
+              likeable: modelId,
+            },
+            {
+              userId: userId,
+            },
+          ],
+        });
         if (liked) {
           await dislikeable.likes.pull(liked.id);
           await liked.deleteOne();
@@ -44,6 +61,16 @@ class DislikeService {
         var isAdded = true;
       }
       return isAdded;
+    } catch (error) {
+      console.error("Something went wrong at dislike service layer: " + error);
+      throw error;
+    }
+  }
+
+  async getAllUserIdsWhoDisliked(id) {
+    try {
+      const { userId } = await this.dislikeRepository.get(id);
+      return userId;
     } catch (error) {
       console.error("Something went wrong at dislike service layer: " + error);
       throw error;

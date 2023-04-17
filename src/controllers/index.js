@@ -6,7 +6,9 @@ import {
   subscribe,
   unsubscribe,
   like,
+  getUserIdsWhoLiked,
   dislike,
+  getUserIdsWhoDisliked,
 } from "./user-controller.js";
 import {
   addVideo,
@@ -51,4 +53,6 @@ export {
   addComment,
   deleteComment,
   getComments,
+  getUserIdsWhoLiked,
+  getUserIdsWhoDisliked,
 };

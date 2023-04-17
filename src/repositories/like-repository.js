@@ -8,7 +8,7 @@ class LikeRepository extends CrudRepository {
 
   async findByUserAndLikable(data) {
     try {
-      const like = await Like.findOne(data);
+      const like = await this.model.findOne(data);
       return like;
     } catch (error) {
       console.error(error);
@@ -16,9 +16,9 @@ class LikeRepository extends CrudRepository {
     }
   }
 
-  async getByLikeable(id) {
+  async getByLikeable(data) {
     try {
-      const response = await this.model.findOne({ likeable: id });
+      const response = await this.model.findOne(data);
       return response;
     } catch (error) {
       console.error("Something went wrong at crud repo layer: " + error);
