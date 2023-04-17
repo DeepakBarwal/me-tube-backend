@@ -34,7 +34,26 @@ class UserService {
     }
   }
 
-  async googleAuth() {}
+  async googleAuth(userData) {
+    try {
+      const user = await this.userRepository.getByName(userData.name);
+      if (user) {
+        const token = user.genJWT();
+        const { password, ...withoutPassword } = user._doc;
+        return { ...withoutPassword, token };
+      } else {
+        const newUser = await this.userRepository.create({
+          ...userData,
+          fromGoogle: true,
+        });
+        const token = newUser.genJWT();
+        return { ...newUser._doc, token };
+      }
+    } catch (error) {
+      console.error("Something went wrong at user service layer: " + error);
+      throw error;
+    }
+  }
 
   async updateUser(idFromParams, idFromCookie, data) {
     try {

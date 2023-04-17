@@ -18,10 +18,13 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     img: {
       type: String,
+    },
+    fromGoogle: {
+      type: Boolean,
+      default: false,
     },
     subscribers: [
       {
@@ -45,7 +48,7 @@ userSchema.pre("save", async function (next) {
   try {
     const user = this;
     const existingUser = await User.findById(user.id);
-    if (!existingUser) {
+    if (!existingUser && !user.fromGoogle) {
       const SALT = bcrypt.genSaltSync(10);
       const encryptedPassword = bcrypt.hashSync(this.password, SALT);
       user.password = encryptedPassword;
