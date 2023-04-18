@@ -14,11 +14,11 @@ class DislikeService {
   async toggleDislike(modelId, modelType, userId) {
     try {
       if (modelType === "Video") {
-        var dislikeable = await this.videoRepository.get(modelId);
+        var likeable = await this.videoRepository.get(modelId);
       } else {
         throw new Error("unknown model type");
       }
-      const exists = await this.dislikeRepository.findByUserAndDisLikable({
+      const likeExists = await this.likeRepository.findByUserAndLikable({
         $and: [
           {
             userId: userId,
@@ -27,37 +27,41 @@ class DislikeService {
             onModel: modelType,
           },
           {
-            dislikable: modelId,
+            likeable: modelId,
           },
         ],
       });
-      if (exists) {
-        dislikeable.likes.pull(exists.id);
-        await dislikeable.save();
-        await exists.deleteOne();
+      const dislikeExists = await this.dislikeRepository.getByDislikeable({
+        $and: [
+          {
+            userId: userId,
+          },
+          {
+            onModel: modelType,
+          },
+          {
+            dislikeable: modelId,
+          },
+        ],
+      });
+      if (dislikeExists) {
+        likeable.dislikes.pull(dislikeExists.id);
+        await likeable.save();
+        await dislikeExists.deleteOne();
         var isAdded = false;
       } else {
+        if (likeExists) {
+          likeable.likes.pull(likeExists.id);
+          await likeable.save();
+          await likeExists.deleteOne();
+        }
         var newDislike = await this.dislikeRepository.create({
           userId: userId,
           onModel: modelType,
           dislikeable: modelId,
         });
-        const liked = await this.likeRepository.getByLikeable({
-          $and: [
-            {
-              likeable: modelId,
-            },
-            {
-              userId: userId,
-            },
-          ],
-        });
-        if (liked) {
-          await dislikeable.likes.pull(liked.id);
-          await liked.deleteOne();
-        }
-        dislikeable.dislikes.push(newDislike);
-        await dislikeable.save();
+        likeable.dislikes.push(newDislike);
+        await likeable.save();
         var isAdded = true;
       }
       return isAdded;

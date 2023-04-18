@@ -18,7 +18,7 @@ class LikeService {
       } else {
         throw new Error("unknown model type");
       }
-      const exists = await this.likeRepository.findByUserAndLikable({
+      const likeExists = await this.likeRepository.findByUserAndLikable({
         $and: [
           {
             userId: userId,
@@ -31,32 +31,35 @@ class LikeService {
           },
         ],
       });
-      if (exists) {
-        likeable.likes.pull(exists.id);
+      const dislikeExists = await this.dislikeRepository.getByDislikeable({
+        $and: [
+          {
+            userId: userId,
+          },
+          {
+            onModel: modelType,
+          },
+          {
+            dislikeable: modelId,
+          },
+        ],
+      });
+      if (likeExists) {
+        likeable.likes.pull(likeExists.id);
         await likeable.save();
-        await exists.deleteOne();
+        await likeExists.deleteOne();
         var isAdded = false;
       } else {
+        if (dislikeExists) {
+          likeable.dislikes.pull(dislikeExists.id);
+          await likeable.save();
+          await dislikeExists.deleteOne();
+        }
         var newLike = await this.likeRepository.create({
           userId: userId,
           onModel: modelType,
           likeable: modelId,
         });
-        const disliked = await this.dislikeRepository.getByDislikeable({
-          $and: [
-            {
-              dislikeable: modelId,
-            },
-            {
-              userId: userId,
-            },
-          ],
-        });
-        console.log("disliked", disliked);
-        if (disliked) {
-          await likeable.dislikes.pull(disliked.id);
-          await disliked.deleteOne();
-        }
         likeable.likes.push(newLike);
         await likeable.save();
         var isAdded = true;

@@ -11,7 +11,7 @@ class DislikeRepository extends CrudRepository {
       const dislike = await this.model.findOne(data);
       return dislike;
     } catch (error) {
-      console.error(error);
+      console.error("Something went wrong at crud repo layer: " + error);
       throw error;
     }
   }
